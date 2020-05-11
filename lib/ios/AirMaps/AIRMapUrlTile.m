@@ -7,6 +7,7 @@
 //
 
 #import "AIRMapUrlTile.h"
+#import "AIRMapUrlTileOverlay.h"
 #import <React/UIView+React.h>
 
 @implementation AIRMapUrlTile {
@@ -63,10 +64,28 @@
     [self update];
 }
 
+- (void)setOverzoomEnabled:(BOOL)overzoomEnabled
+{
+    _overzoomEnabled = overzoomEnabled;
+    if(self.tileOverlay) {
+        self.tileOverlay.overzoomEnabled = _overzoomEnabled;
+    }
+    [self update];
+}
+
+- (void)setOverzoomThreshold:(NSInteger)overzoomThreshold
+{
+    _overzoomThreshold = overzoomThreshold;
+    if(self.tileOverlay) {
+        self.tileOverlay.overzoomThreshold = overzoomThreshold;
+    }
+    [self update];
+}
+
 - (void) createTileOverlayAndRendererIfPossible
 {
     if (!_urlTemplateSet) return;
-    self.tileOverlay = [[MKTileOverlay alloc] initWithURLTemplate:self.urlTemplate];
+    self.tileOverlay = [[AIRMapUrlTileOverlay alloc] initWithURLTemplate:self.urlTemplate];
 
     self.tileOverlay.canReplaceMapContent = self.shouldReplaceMapContent;
 
@@ -81,6 +100,12 @@
     }
     if (_tileSizeSet) {
         self.tileOverlay.tileSize = CGSizeMake(self.tileSize, self.tileSize);
+    }
+    if (self.overzoomEnabled) {
+        self.tileOverlay.overzoomEnabled = self.overzoomEnabled;
+    }
+    if (self.overzoomThreshold) {
+        self.tileOverlay.overzoomThreshold = self.overzoomThreshold;
     }
     self.renderer = [[MKTileOverlayRenderer alloc] initWithTileOverlay:self.tileOverlay];
 }

@@ -14,15 +14,19 @@
 #import <React/RCTView.h>
 #import "AIRMapCoordinate.h"
 #import "AIRMap.h"
+#import "AIRMapUrlTileOverlay.h"
 #import "RCTConvert+AirMap.h"
 
 @interface AIRMapUrlTile : MKAnnotationView <MKOverlay>
 
 @property (nonatomic, weak) AIRMap *map;
 
-@property (nonatomic, strong) MKTileOverlay *tileOverlay;
+@property (nonatomic, strong) AIRMapUrlTileOverlay *tileOverlay;
 @property (nonatomic, strong) MKTileOverlayRenderer *renderer;
 @property (nonatomic, copy) NSString *urlTemplate;
+
+@property BOOL overzoomEnabled;
+@property NSInteger overzoomThreshold;
 @property NSInteger maximumZ;
 @property NSInteger minimumZ;
 @property BOOL flipY;
